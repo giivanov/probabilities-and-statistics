@@ -1,0 +1,142 @@
+---
+title: "R Lab2"
+output: html_notebook
+---
+```{r include=FALSE}
+  library('MASS')
+  attach(survey)
+```
+
+Разглеждаме данните 'survey' от пакета 'MASS'
+```{r}
+  str(survey)
+```
+
+Зад.1
+
+Въз основа на данните пресметнете вероятностите:
+
+а) Случайно избран човек да се окаже редовен пушач.
+
+```{r}
+  s = Smoke[!is.na(Smoke)]
+  sum(s == 'Regul')/length(s)
+```
+
+б) Случайно избран човек да се окаже редовно пушещ мъж.
+```{r}
+  c = survey[!is.na(Smoke) & !is.na(Sex), c('Smoke', 'Sex')]
+  sum(c$Sex == 'Male' & c$Smoke == 'Regul')/length(c[,1])
+```
+
+в) Случайно избран мъж да се окаже редовен пушач.
+```{r}
+  sum(c$Sex=='Male' & c$Smoke=='Regul')/sum(c$Sex=='Male')
+```
+
+г) Случайно избран редовен пушач да се окаже мъж.
+```{r}
+  sum(c$Sex=='Male' & c$Smoke=='Regul')/sum(c$Smoke=='Regul')
+```
+
+Зад.2
+
+Представете графично данните за тютюнопушенето на судентите.
+```{r}
+  x = factor(Smoke, levels = levels(Smoke)[c(2,3,4,1)])
+  barplot(table(x), col = c('Red', 'Green', 'Blue', 'Yellow'))
+```
+
+А също и за тютюнопушенето в зависимост от пола.
+```{r}
+  barplot(table(Sex, x), beside = T, col = c('Red', 'Blue'), legend = levels(Sex))
+```
+
+Зад.3
+
+Пресметнете оценки - средно, медиана, квартили, стандартно отклонение и т.н. за височина на студентите.
+```{r}
+  mean(Height, na.rm = T)
+  median(Height, na.rm = T)
+  summary(Height)
+  sd(Height, na.rm = T)
+  boxplot(Height)
+```
+
+Направете отделни изчисления за мъжете и жените.
+```{r}
+  male = !is.na(Sex) & Sex == 'Male'
+  maleHeight = Height[male]
+  mean(maleHeight, na.rm = T)
+  median(maleHeight, na.rm = T)
+  summary(maleHeight)
+  sd(maleHeight, na.rm = T)
+
+  female = !is.na(Sex) & Sex == 'Female'
+  femaleHeight = Height[female]
+  mean(femaleHeight, na.rm = T)
+  median(femaleHeight, na.rm = T)
+  summary(femaleHeight)
+  sd(femaleHeight, na.rm = T)
+  boxplot(femaleHeight, maleHeight)
+```
+
+Каква част от студентите се различават от средната височина с неповече от едно стандартно отклонение?
+```{r}
+  h = Height[!is.na(Height)]
+  sum(abs(h - mean(h)) <= sd(h))/length(h)
+```
+
+Зад. 4
+
+Представете графично височината на студентите.
+```{r}
+  hist(Height, breaks = 12)
+```
+
+Зад.5
+
+Направете хистограма на пулса на студентите.
+```{r}
+  d = hist(Pulse)
+  lines(d$mids, d$counts)
+```
+
+Зад.6
+
+Разделете цтудентите според възрастта им на три групи: А - до 20г, B - от 20 до 25 и C - над 25. Представете графично.
+```{r}
+  A = survey[!is.na(Age) & Age < 20,]
+  B = survey[!is.na(Age) & Age >= 20 & Age < 25,]
+  C = survey[!is.na(Age) & Age > 25,]
+  barplot(table(A$Smoke))
+  barplot(table(B$Smoke))
+  barplot(table(C$Smoke))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
