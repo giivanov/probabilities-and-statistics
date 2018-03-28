@@ -1,0 +1,187 @@
+---
+title: "R Lab3"
+output: html_notebook
+---
+```{r include=FALSE}
+  library('MASS')
+  attach(survey)
+```
+
+Разглеждаме данните 'survey' от пакета 'MASS'
+```{r}
+  str(survey)
+```
+Зад.1
+
+От данните 'survey' на пакета 'MASS' определете средно $\bar{X_n}$ и стандртното отклонение $S_n$ за височината на студентите.
+средно:
+```{r}
+  # calculate by formula
+  X = Height[!is.na(Height)]
+  Xn_bar = sum(X)/length(X)
+  Xn_bar
+  # caclulate by built-in function
+  Xn_bar = mean(Height, na.rm = T)
+  Xn_bar
+```
+дисперсия
+```{r}
+  # calculate by formula
+  sum((X - Xn_bar)^2)/(length(X)-1)
+  # caclulate by built-in function
+  var(Height, na.rm = T)
+```
+стандартно отклонение
+```{r}
+  # calculate by formula
+  sqrt(var(X))
+  # caclulate by built-in function
+  Sn = sd(Height, na.rm = T)
+  Sn
+```
+
+Направете отделни изчисления за мъжете и жените.
+```{r}
+  male = !is.na(Sex) & Sex == 'Male'
+  female = !is.na(Sex) & Sex == 'Female'
+  summary(Height[male])
+  summary(Height[female])
+```
+```{r}
+  boxplot(Height[female], Height[male], names = c('Female', 'Male'))
+```
+
+Каква част от студентите попадат в интервалите:
+
+а) $(X_n - S_n,\ X_n + S_n)$;
+```{r}
+  height = Height[!is.na(Height)]
+  sum(height > Xn_bar - Sn & height < Xn_bar + Sn) / length(height)
+  c = cut(height, c(0, Xn_bar - Sn, Xn_bar + Sn, max(height)))
+  str(c)
+  levels(c)
+  prop.table(table(c))
+```
+
+б) $(X_n - 2 S_n,\ X_n + 2 S_n)$;
+```{r}
+  sum(height > Xn_bar - 2 * Sn & height < Xn_bar + 2 * Sn) / length(height)
+  c2 = cut(height, c(0, Xn_bar - 2 * Sn, Xn_bar + 2 * Sn, max(height)))
+  prop.table(table(c2))
+```
+
+в) $(X_n - 3 S_n,\ X_n + 3 S_n)$?
+```{r}
+  sum(height > Xn_bar - 3 * Sn & height < Xn_bar + 3 * Sn) / length(height)
+  c3 = cut(height, c(0, Xn_bar - 3 * Sn, Xn_bar + 3 * Sn, max(height)))
+  prop.table(table(c3))
+```
+
+Направете хистограма за височината на студентите. Добавете полигона и плътността.
+```{r}
+  d = hist(Height, probability = T)
+  lines(d$mids, d$counts)
+  lines(density(height))
+  lines(density(height, bw = 1), col = 'red')
+```
+
+Зад.2 Представете графично данните от файла ”CData.txt“. Пресметнете корелацията.
+```{r}
+  #getwd()
+  #setwd()
+  data = read.csv(file = 'CData.txt', header = T, sep = ' ', dec = '.')
+  str(data)
+  plot(data)
+  x = data$x
+  y = data$y
+  l = lm(y~x)
+  l
+  abline(l)
+```
+ковариация
+  $$cov(x,y) = \frac{1}{n} \sum_{i=1}^{n} (x_i-E(X)(y_i-E(Y))$$ 
+  cov = sum((x-x_bar)(y-y_bar))/(n-1)
+корелация
+  $$ \rho_{X,Y} =corr(x,y) = \frac{cov(X,Y)}{\sigma_X \sigma_Y}$$ 
+  corr = cov(x,y) / [sd(x) sd(y)]
+```{r}
+  x0 = 1:30
+  y0 = 0.5 * x0 + rnorm(30)
+  plot(x0,y0)
+  cor(x0,y0)
+  y1 = 0.5 * x0 + 3 * rnorm(30)
+  lines(x0, y1, col='red', type = 'p')
+  cor(x0,y1)
+```
+
+Зад.3 Разгледайте данните ’anscombe’. За всяка двойка $(x_i, y_i)_{i=1...4}$
+пресметнете числовите характеристики, представете графично, отстранете ’outlier’.
+```{r}
+  str(anscombe)
+```
+```{r}
+  x = anscombe$x1
+  y = anscombe$y1
+  cov(x, y)
+  cor(x, y)
+  plot(x, y)
+  abline(lm(y~x))
+```
+```{r}
+  x = anscombe$x2
+  y = anscombe$y2
+  cov(x, y)
+  cor(x, y)
+  plot(x, y)
+  abline(lm(y~x))
+```
+```{r}
+  x = anscombe$x3
+  y = anscombe$y3
+  cov(x, y)
+  cor(x, y)
+  plot(x, y)
+  abline(lm(y~x))
+  ind <- which.max(y)
+  y <- y[-ind]
+  x <- x[-ind]
+  plot(x, y)
+  abline(lm(y~x))
+```
+```{r}
+  x = anscombe$x4
+  y = anscombe$y4
+  cov(x, y)
+  cor(x, y)
+  plot(x, y)
+  abline(lm(y~x))
+  ind <- which.max(x)
+  y <- y[-ind]
+  x <- x[-ind]
+  plot(x, y)
+```
+
+Зад.4 Разгледайте данните ’Titanic’. Има ли връзка между пола
+и шанса за оцеляване? А между класата и оцеляването? Направете
+подходящи графики.
+```{r}
+  str(Titanic)
+```
+```{r}
+  dim(Titanic)
+  prop.table(apply(Titanic, c(2,4), sum))
+  prop.table(apply(Titanic, c(1, 4), sum))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
