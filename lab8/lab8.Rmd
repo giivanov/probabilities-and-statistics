@@ -1,0 +1,101 @@
+---
+title: "R Lab8"
+output: html_notebook
+---
+
+$$
+H_0 - хипотеза \\
+H_1 - алтернатива\\
+\alpha - ниво\ на\ значимост
+$$
+H0: mu = 5.2 | H!: mu != 5.2
+```{r}
+  set.seed(3)
+  n = 20
+  x = rnorm(n, 5, 3)
+  m = mean(x)
+  s = sd(x)
+  v = (m - 5.2)/sqrt(s/n)
+  2 * pt(v, df = n-1)
+```
+```{r}
+  t.test(x, mu=5.2, alternative = "two.sided")
+```
+Виж:
+t.test()
+wilcox.test()
+prop.test()
+
+```{r}
+  x = rnorm(20, 5, 0.2)
+  t.test(x, mu = 5.2, alternative = 'two.sided')
+```
+Shapiro
+```{r}
+  x = rnorm(20, 5, 0.2)
+  shapiro.test(x)
+```
+```{r}
+  y = runif(20)
+  shapiro.test(y)
+  y = shapiro.test(runif(200))
+```
+Задача 1:
+```{r}
+  barplot(vacation)
+```
+```{r}
+  qqplot(vacation, 1:length(vacation))
+```
+```{r}
+  shapiro.test(vacation)
+```
+```{r}
+  t.test(vacation, mu = 24, alternative = 'two.sided')
+```
+```{r}
+  t.test(vacation, mu = 24, alternative = 'less')
+  t.test(vacation, mu = 24, alternative = 'greater')
+```
+```{r}
+  prop.test(42, 100, 0.5)
+```
+не можем да отхвърлим хипотезата
+```{r}
+  prop.test(420, 1000, 0.5)
+```
+отхвърляме хипотезата
+```{r}
+  prop.test(42, 100, 0.5, alternative = 'less')
+  prop.test(420, 1000, 0.5, alternative = 'less')
+```
+Задача 3:
+```{r}
+  x = c(12.8, 3.5, 2.9, 9.4, 8.7, 0.7, 0.2, 2.8, 1.9, 2.8, 3.1, 15.8)
+  qqplot(1:length(x), x)
+```
+```{r}
+  hist(x)
+```
+```{r}
+  wilcox.test(x, mu = 5, alternative = 'less')
+```
+```{r}
+  boxplot(cancer)
+```
+```{r}
+  hist(cancer$stomach)
+```
+```{r}
+  wilcox.test(cancer$stomach, mu = 100, alternative = 'less')
+```
+
+
+
+
+
+
+
+
+
+

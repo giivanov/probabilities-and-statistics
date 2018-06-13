@@ -1,0 +1,102 @@
+---
+title: "R Lab6"
+output: html_notebook
+---
+
+```{r}
+  x = rnorm(n = 1000, mean = 5, sd = sqrt(2))
+  hist(x, probability = T)
+  lines(density(x))
+  s = seq(0,9,0.01)
+  lines(s, dnorm(s, 5, sqrt(2)), col = 'red')
+```
+```{r}
+  boxplot(x, horizontal = T)
+```
+```{r}
+  p = ppoints(100)
+  # теоритичните квантили
+  qt = qnorm(p)
+  # квантили за генерираните данни
+  qx = quantile(x, p)
+  plot(qt, qx)
+  # наблюдава се линейна зависимост => x е нормално разпределена / така я генерирахме
+```
+```{r}
+  # вградената функция за това
+  qqnorm(x)
+  qqline(x)
+```
+```{r}
+  x = runif(100, 1, 5)
+  invisible(split.screen(c(2,1)))
+  screen(1)
+  hist(x, probability = T)
+  screen(2)
+  boxplot(x, horizontal = T)
+  close.screen(all.screens = T)
+```
+```{r}
+  xe = rexp(100, 3)
+  hist(xe)
+  boxplot(xe, horizontal = T)
+  qqnorm(xe)
+```
+```{r}
+  x1 = rnorm(50, 1, sqrt(2))
+  x2 = rnorm(50, 5, sqrt(2))
+  x = c(x1, x2)
+  hist(x, probability = T)
+  lines(density(x))
+```
+```{r}
+    r1 = runif(100, 2, 5)
+    r2 = runif(100, 2, 5)
+    r3 = runif(100, 2, 5)
+    r4 = runif(100, 2, 5)
+    r5 = runif(100, 2, 5)
+    r = r1 + r2 + r3 + r4 + r5
+    hist(r, probability = T)
+    lines(density(r))
+```
+```{r}
+  ff = function(n = 2){
+    x = runif(100, 1, 5)
+    for(i in 2: n){
+      x = x + runif(100, 1, 5)
+    }
+    x
+  }
+  rn = ff(100000)
+  hist(rn, probability = T)
+  lines(density(rn))
+```
+```{r}
+  library('UsingR')
+  hist(qt, probability = T)
+  lines(density(babies$wt))
+  qqnorm(babies$wt)
+  qqline(babies$wt)
+```
+```{r}
+  hist(exec.pay, probability = T)
+  lines(density(exec.pay))
+  boxplot(exec.pay, horizontal = T)
+  qqnorm(exec.pay)
+```
+```{r}
+  x = log(exec.pay[exec.pay > 0])
+  hist(x)
+  qqnorm(x)
+  qqline(x)
+```
+```{r}
+  p = pnorm(20, mean = 25, sd = 6)
+  p
+  qnorm(p + (1 - p)/2, 25, 6)
+```
+
+
+
+
+

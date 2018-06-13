@@ -1,0 +1,80 @@
+---
+title: "R Lab7"
+output: html_notebook
+---
+
+$$
+X_1, X_2, ... X_n => EX = \mu \\
+r \in (0.9, 0.999) \\
+
+
+
+X \in N(\mu, \sigma^2)\\
+\sum Xi \in N(n \mu, n \sigma^2)\\
+\bar{X_n}=\dfrac{\Sigma X_i}{n} \in N(\mu, \dfrac{\sigma^2}{n})\\
+
+q_1 < \dfrac{\bar{X_n} - \mu}{\sqrt{\dfrac{\sigma^2}{n}}} < q_2\\
+$$
+
+```{r}
+x = c(10.0, 13.6, 13.2, 11.6, 12.5, 14.2, 14.9, 14.5, 13.4, 8.6, 11.5, 16.0, 14.2, 16.8, 17.9, 17.0)
+
+```
+
+```{r}
+  q1 = qnorm(0.025, 0, 1)
+  q1
+  q2 = qnorm(0.975, 0, 1)
+  q2
+  m = mean(x)
+  m
+  m + q1 * 3/4
+  m + q2 * 3/4
+```
+```{r}
+  q1 = qnorm(0.01, 0, 1)
+  q1
+  q2 = qnorm(0.99, 0, 1)
+  q2
+  m = mean(x)
+  m
+  m + q1 * 3/4
+  m + q2 * 3/4
+```
+```{r}
+  t.test(x)
+```
+```{r}
+  t.test(x, conf.level = 0.98)
+```
+
+```{r}
+  wilcox.test(x, conf.int = T, conf.level = 0.9)
+```
+```{r}
+  x = rnorm(20, 5, 2)
+  x
+  t.test(x)$conf.int
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

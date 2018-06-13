@@ -1,0 +1,73 @@
+---
+title: "R Lab4"
+output: html_notebook
+
+Функции в R
+---
+```{r}
+  ff = function( n = 5 ){ n ** 3 }
+  ff()
+  ff(3)
+```
+заворе, с повторение
+```{r}
+  sample(1:6, replace = T, 10)
+```
+пермутация
+```{r}
+  sample(1:10, replace = F, 10)
+```
+```{r}
+  sample(0:1, replace = T, prob = c(5/6,1/6), 10)
+```
+```{r}
+  sample(c('six', 'anything else'), replace = T, prob = c(5/6,1/6), 10)
+```
+```{r}
+  simulateDice = function(n = 100) {
+    x = sample(1:6, replace = T,  n)
+    return(sum(x == 6))
+  }
+  simulateDice()
+```
+```{r}
+  propDice = function(n = 100) { simulateDice(n) / n }
+  propDice()
+```
+```{r}
+  v = sample(1:6, replace = T, 10000)
+  for (k in 1:100) {
+    p[k] = sum((v[1:(k*100)] == 6))/k
+  }
+plot(p, type = 'l')
+```
+```{r}
+  s = 0
+  for (i in 1:100) {
+    x = simulateDice(100)
+    s = s + x
+    p[k] = s/(i * 100)
+  }
+plot(p, type = 'l', ylim = c(1/4, 1/8))
+abline(h = 1/6, col = 'red')
+
+```
+```{r}
+  prop.bithday = function(p, leap = F) {
+    n = 1
+    s = 1
+    while(s > 1 - p){
+      s = s * ((365+leap) - n) / (365+leap)
+      n = n + 1
+    }
+    return(n)
+  }
+  prop.bithday(0.99, leap = T)
+```
+
+
+```{r}
+  prop.win(p1 = 0.3, p2 = 0.4){
+    
+  }
+```

@@ -1,0 +1,1 @@
+ff = function( n = 5 ){ n ** 3 }
